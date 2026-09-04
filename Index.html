@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تحدي نافس</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Tahoma","Arial",sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    background:linear-gradient(135deg,#176b87,#219ebc);
+    color:white;
+    padding:25px 18px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
+}
+
+header h1{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+header p{
+    opacity:.9;
+}
+
+.container{
+    width:min(1200px,94%);
+    margin:25px auto;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.stat .icon{
+    font-size:32px;
+}
+
+.stat strong{
+    display:block;
+    font-size:28px;
+    margin:8px;
+    color:#176b87;
+}
+
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.tab{
+    border:0;
+    padding:13px 22px;
+    border-radius:12px;
+    background:#e1eaf0;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.tab.active{
+    background:#176b87;
+    color:white;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+    margin-bottom:20px;
+}
+
+.card h2{
+    margin-bottom:18px;
+    color:#176b87;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#176b87;
+    color:white;
+    padding:13px;
+}
+
+td{
+    padding:13px;
+    border-bottom:1px solid #edf0f3;
+    text-align:center;
+}
+
+tr:hover{
+    background:#f7fbfd;
+}
+
+.rank{
+    font-size:23px;
+    font-weight:bold;
+}
+
+.first{
+    background:#fff9df;
+}
+
+.second{
+    background:#f4f4f4;
+}
+
+.third{
+    background:#fff0e7;
+}
+
+.admin{
+    margin-top:30px;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    border:1px solid #d8e0e7;
+    border-radius:10px;
+    margin-top:6px;
+    margin-bottom:12px;
+    outline:none;
+}
+
+input:focus,select:focus{
+    border-color:#219ebc;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+button{
+    border:0;
+}
+
+.btn{
+    background:#176b87;
+    color:white;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn:hover{
+    opacity:.9;
+}
+
+.btn-danger{
+    background:#d9534f;
+}
+
+.btn-secondary{
+    background:#607d8b;
+}
+
+.hidden{
+    display:none;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    background:#e5f5f8;
+    color:#176b87;
+    font-size:13px;
+}
+
+.student-name{
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#777;
+}
+
+@media(max-width:700px){
+
+    header h1{
+        font-size:25px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:12px;
+        overflow-x:auto;
+    }
+
+    table{
+        min-width:650px;
+    }
+
+    .tabs{
+        display:grid;
+        grid-template-columns:1fr;
+    }
+
+    .tab{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏆 تحدي نافس</h1>
+    <p>منصة متابعة نتائج الطلاب وتحدي التميز</p>
+</header>
+
+<div class="container">
+
+    <!-- الإحصائيات -->
+    <section class="stats">
+
+        <div class="stat">
+            <div class="icon">👨‍🎓</div>
+            <strong id="studentsCount">0</strong>
+            <span>عدد الطلاب</span>
+        </div>
+
+        <div class="stat">
+            <div class="icon">📝</div>
+            <strong id="testsCount">0</strong>
+            <span>عدد الاختبارات</span>
+        </div>
+
+        <div class="stat">
+            <div class="icon">🏆</div>
+            <strong id="topStudent">—</strong>
+            <span>المتصدر</span>
+        </div>
+
+    </section>
+
+    <!-- التبويبات -->
+
+    <div class="tabs">
+
+        <button class="tab active" onclick="showClass('all',this)">
+            🏆 الترتيب العام
+        </button>
+
+        <button class="tab" onclick="showClass('أ',this)">
+            🟦 الفصل (أ)
+        </button>
+
+        <button class="tab" onclick="showClass('ب',this)">
+            🟩 الفصل (ب)
+        </button>
+
+    </div>
+
+    <!-- جدول الترتيب -->
+
+    <section class="card">
+
+        <h2 id="rankingTitle">🏆 الترتيب العام</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>المركز</th>
+                    <th>اسم الطالب</th>
+                    <th>الفصل</th>
+                    <th>المجموع</th>
+                    <th>المتوسط</th>
+                    <th>عدد الاختبارات</th>
+                </tr>
+            </thead>
+
+            <tbody id="rankingTable"></tbody>
+
+        </table>
+
+    </section>
+
+
+    <!-- لوحة الإدارة -->
+
+    <section class="card admin">
+
+        <h2>⚙️ لوحة الإدارة</h2>
+
+        <h3>إضافة طالب</h3>
+
+        <div class="form-grid">
+
+            <div>
+                <label>اسم الطالب</label>
+                <input id="studentName" placeholder="مثال: محمد أحمد">
+            </div>
+
+            <div>
+                <label>الفصل</label>
+
+                <select id="studentClass">
+                    <option value="أ">الفصل (أ)</option>
+                    <option value="ب">الفصل (ب)</option>
+                </select>
+
+            </div>
+
+            <div style="display:flex;align-items:end;">
+                <button class="btn" onclick="addStudent()">
+                    ➕ إضافة الطالب
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- إضافة اختبار -->
+
+    <section class="card">
+
+        <h2>📝 إضافة اختبار جديد</h2>
+
+        <div class="form-grid">
+
+            <div>
+                <label>اسم الاختبار</label>
+                <input id="testName" placeholder="مثال: اختبار الأسبوع الأول">
+            </div>
+
+            <div style="display:flex;align-items:end;">
+                <button class="btn" onclick="addTest()">
+                    ➕ إنشاء الاختبار
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- الدرجات -->
+
+    <section class="card">
+
+        <h2>📊 إدخال الدرجات</h2>
+
+        <div>
+
+            <label>اختر الاختبار</label>
+
+            <select id="testSelect" onchange="renderGrades()">
+            </select>
+
+        </div>
+
+        <div id="gradesArea"></div>
+
+    </section>
+
+
+    <!-- إدارة الطلاب -->
+
+    <section class="card">
+
+        <h2>👨‍🎓 إدارة الطلاب</h2>
+
+        <div id="studentsManagement"></div>
+
+    </section>
+
+
+    <!-- الاختبارات -->
+
+    <section class="card">
+
+        <h2>📝 إدارة الاختبارات</h2>
+
+        <div id="testsManagement"></div>
+
+    </section>
+
+</div>
+
+<footer>
+    تحدي نافس © 2026
+</footer>
+
+
+<script>
+
+/* =========================
+   البيانات
+========================= */
+
+let students =
+JSON.parse(localStorage.getItem("nafes_students")) || [];
+
+let tests =
+JSON.parse(localStorage.getItem("nafes_tests")) || [];
+
+let currentClass = "all";
+
+
+/* =========================
+   الحفظ
+========================= */
+
+function save(){
+
+    localStorage.setItem(
+        "nafes_students",
+        JSON.stringify(students)
+    );
+
+    localStorage.setItem(
+        "nafes_tests",
+        JSON.stringify(tests)
+    );
+
+}
+
+
+/* =========================
+   إضافة طالب
+========================= */
+
+function addStudent(){
+
+    const name =
+        document.getElementById("studentName").value.trim();
+
+    const className =
+        document.getElementById("studentClass").value;
+
+    if(!name){
+
+        alert("يرجى كتابة اسم الطالب");
+
+        return;
+
+    }
+
+    students.push({
+
+        id:Date.now(),
+
+        name:name,
+
+        class:className,
+
+        scores:{}
+
+    });
+
+    document.getElementById("studentName").value="";
+
+    save();
+
+    renderAll();
+
+}
+
+
+/* =========================
+   حذف طالب
+========================= */
+
+function deleteStudent(id){
+
+    if(!confirm("هل تريد حذف الطالب؟")) return;
+
+    students =
+        students.filter(s => s.id !== id);
+
+    save();
+
+    renderAll();
+
+}
+
+
+/* =========================
+   إضافة اختبار
+========================= */
+
+function addTest(){
+
+    const name =
+        document.getElementById("testName").value.trim();
+
+    if(!name){
+
+        alert("يرجى كتابة اسم الاختبار");
+
+        return;
+
+    }
+
+    tests.push({
+
+        id:Date.now(),
+
+        name:name
+
+    });
+
+    document.getElementById("testName").value="";
+
+    save();
+
+    renderAll();
+
+}
+
+
+/* =========================
+   حذف اختبار
+========================= */
+
+function deleteTest(id){
+
+    if(!confirm("هل تريد حذف الاختبار وجميع درجاته؟"))
+        return;
+
+    tests =
+        tests.filter(t => t.id !== id);
+
+    students.forEach(student => {
+
+        delete student.scores[id];
+
+    });
+
+    save();
+
+    renderAll();
+
+}
+
+
+/* =========================
+   حساب بيانات الطالب
+========================= */
+
+function getStudentStats(student){
+
+    let scores=[];
+
+    tests.forEach(test => {
+
+        const value =
+            student.scores[test.id];
+
+        if(
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+        ){
+
+            scores.push(Number(value));
+
+        }
+
+    });
+
+    const total =
+        scores.reduce((a,b)=>a+b,0);
+
+    const count =
+        scores.length;
+
+    const average =
+        count ? total/count : 0;
+
+    return {
+
+        total:total,
+
+        count:count,
+
+        average:average
+
+    };
+
+}
+
+
+/* =========================
+   ترتيب الطلاب
+========================= */
+
+function getRanking(){
+
+    let list =
+        students.map(student => {
+
+            return {
+
+                ...student,
+
+                ...getStudentStats(student)
+
+            };
+
+        });
+
+
+    list.sort((a,b)=>{
+
+        if(b.average !== a.average)
+
+            return b.average-a.average;
+
+        if(b.total !== a.total)
+
+            return b.total-a.total;
+
+        return b.count-a.count;
+
+    });
+
+
+    return list;
+
+}
+
+
+/* =========================
+   عرض الترتيب
+========================= */
+
+function renderRanking(){
+
+    let list = getRanking();
+
+    if(currentClass !== "all"){
+
+        list =
+            list.filter(
+                s => s.class === currentClass
+            );
+
+    }
+
+    const table =
+        document.getElementById("rankingTable");
+
+    table.innerHTML="";
+
+
+    list.forEach((student,index)=>{
+
+        const position=index+1;
+
+        let medal=position;
+
+        if(position===1) medal="🥇";
+
+        if(position===2) medal="🥈";
+
+        if(position===3) medal="🥉";
+
+
+        const row =
+            document.createElement("tr");
+
+
+        if(position===1)
+            row.className="first";
+
+        if(position===2)
+            row.className="second";
+
+        if(position===3)
+            row.className="third";
+
+
+        row.innerHTML=`
+
+            <td class="rank">${medal}</td>
+
+            <td class="student-name">
+                ${student.name}
+            </td>
+
+            <td>
+                <span class="badge">
+                    الفصل (${student.class})
+                </span>
+            </td>
+
+            <td>
+                ${student.total}
+            </td>
+
+            <td>
+                ${student.average.toFixed(2)}
+            </td>
+
+            <td>
+                ${student.count}
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+
+    document.getElementById("rankingTitle")
+        .textContent =
+        currentClass === "all"
+        ? "🏆 الترتيب العام"
+        : `🏆 ترتيب الفصل (${currentClass})`;
+
+}
+
+
+/* =========================
+   تبديل الفصل
+========================= */
+
+function showClass(className,button){
+
+    currentClass=className;
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab =>
+            tab.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    renderRanking();
+
+}
+
+
+/* =========================
+   تحديث الإحصائيات
+========================= */
+
+function renderStats(){
+
+    document.getElementById(
+        "studentsCount"
+    ).textContent=students.length;
+
+
+    document.getElementById(
+        "testsCount"
+    ).textContent=tests.length;
+
+
+    const ranking=getRanking();
+
+    document.getElementById(
+        "topStudent"
+    ).textContent =
+        ranking.length
+        ? ranking[0].name
+        : "—";
+
+}
+
+
+/* =========================
+   اختيار الاختبار
+========================= */
+
+function renderTestSelect(){
+
+    const select =
+        document.getElementById("testSelect");
+
+    select.innerHTML="";
+
+
+    if(!tests.length){
+
+        select.innerHTML =
+            `<option>لا توجد اختبارات</option>`;
+
+        return;
+
+    }
+
+
+    tests.forEach(test=>{
+
+        const option =
+            document.createElement("option");
+
+        option.value=test.id;
+
+        option.textContent=test.name;
+
+        select.appendChild(option);
+
+    });
+
+
+    renderGrades();
+
+}
+
+
+/* =========================
+   إدخال الدرجات
+========================= */
+
+function renderGrades(){
+
+    const area =
+        document.getElementById("gradesArea");
+
+    const select =
+        document.getElementById("testSelect");
+
+    const testId=select.value;
+
+    if(!testId){
+
+        area.innerHTML="";
+
+        return;
+
+    }
+
+
+    area.innerHTML="";
+
+
+    const table=
+        document.createElement("table");
+
+
+    table.innerHTML=`
+
+        <thead>
+
+            <tr>
+
+                <th>الطالب</th>
+                <th>الفصل</th>
+                <th>الدرجة</th>
+                <th>حفظ</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody></tbody>
+
+    `;
+
+
+    const tbody =
+        table.querySelector("tbody");
+
+
+    students.forEach(student=>{
+
+        const row=
+            document.createElement("tr");
+
+
+        const oldScore =
+            student.scores[testId] ?? "";
+
+
+        row.innerHTML=`
+
+            <td>
+                ${student.name}
+            </td>
+
+            <td>
+                الفصل (${student.class})
+            </td>
+
+            <td>
+
+                <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value="${oldScore}"
+                    id="score-${student.id}"
+                    style="width:100px"
+                >
+
+            </td>
+
+            <td>
+
+                <button
+                    class="btn"
+                    onclick="
+                    saveScore(${student.id},${testId})
+                    "
+                >
+                    حفظ
+                </button>
+
+            </td>
+
+        `;
+
+
+        tbody.appendChild(row);
+
+    });
+
+
+    area.appendChild(table);
+
+}
+
+
+/* =========================
+   حفظ الدرجة
+========================= */
+
+function saveScore(studentId,testId){
+
+    const input =
+        document.getElementById(
+            `score-${studentId}`
+        );
+
+    let score=input.value;
+
+
+    if(score !== ""){
+
+        score=Number(score);
+
+        if(score<0 || score>100){
+
+            alert(
+                "الدرجة يجب أن تكون بين 0 و100"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    const student =
+        students.find(
+            s=>s.id===studentId
+        );
+
+
+    if(!student) return;
+
+
+    if(score===""){
+
+        delete student.scores[testId];
+
+    }else{
+
+        student.scores[testId]=score;
+
+    }
+
+
+    save();
+
+    renderAll();
+
+    alert("تم حفظ الدرجة وتحديث الترتيب ✅");
+
+}
+
+
+/* =========================
+   إدارة الطلاب
+========================= */
+
+function renderStudentsManagement(){
+
+    const area =
+        document.getElementById(
+            "studentsManagement"
+        );
+
+
+    if(!students.length){
+
+        area.innerHTML=
+            "<p>لا يوجد طلاب حتى الآن.</p>";
+
+        return;
+
+    }
+
+
+    let html=`
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>الطالب</th>
+                    <th>الفصل</th>
+                    <th>الإجراء</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    students.forEach(student=>{
+
+        html+=`
+
+            <tr>
+
+                <td>${student.name}</td>
+
+                <td>
+                    الفصل (${student.class})
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="
+                        deleteStudent(${student.id})
+                        "
+                    >
+                        حذف
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html+=`
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    area.innerHTML=html;
+
+}
+
+
+/* =========================
+   إدارة الاختبارات
+========================= */
+
+function renderTestsManagement(){
+
+    const area =
+        document.getElementById(
+            "testsManagement"
+        );
+
+
+    if(!tests.length){
+
+        area.innerHTML=
+            "<p>لا توجد اختبارات حتى الآن.</p>";
+
+        return;
+
+    }
+
+
+    let html=`
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>اسم الاختبار</th>
+                    <th>الإجراء</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    tests.forEach(test=>{
+
+        html+=`
+
+            <tr>
+
+                <td>${test.name}</td>
+
+                <td>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="
+                        deleteTest(${test.id})
+                        "
+                    >
+                        حذف الاختبار
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html+=`
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    area.innerHTML=html;
+
+}
+
+
+/* =========================
+   تشغيل الموقع
+========================= */
+
+function renderAll(){
+
+    renderStats();
+
+    renderRanking();
+
+    renderTestSelect();
+
+    renderStudentsManagement();
+
+    renderTestsManagement();
+
+}
+
+
+/* تشغيل */
+
+renderAll();
+
+</script>
+
+</body>
+</html>
